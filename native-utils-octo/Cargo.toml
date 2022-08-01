@@ -1,0 +1,23 @@
+[package]
+edition = "2021"
+name = "native-utils"
+version = "0.0.0"
+
+[lib]
+crate-type = ["cdylib"]
+
+[[bin]]
+name="search_test"
+required-features=[]
+[dependencies]
+# Default enable napi4 feature, see https://nodejs.org/api/n-api.html#node-api-version-matrix
+napi = { version = "2.4.3", default-features = false, features = ["napi4"] }
+napi-derive = "2.4.1"
+chrono = "0.4.19"
+zip = "0.6.2"
+tempfile = "3.3.0" # oh i am so fucking lazy LOL
+[build-dependencies]
+napi-build = "2.0.0"
+
+[profile.release]
+lto = true

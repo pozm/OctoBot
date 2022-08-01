@@ -1,0 +1,31 @@
+{
+  "name": "octo-bot",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "https://github.com/pozm/octobot.git",
+  "author": "Luna <44528100+pozm@users.noreply.github.com>",
+  "license": "MIT",
+  "scripts": {
+    "prod":"cross-env NODE_ENV=production node dist/index.js",
+    "start": "npm run build && node dist/index.js",
+    "build": "npm run clean && npm run build:native && tsc",
+    "build:native": "cd native-utils-octo && npm run build && npm link && cd .. && npm link native-utils-octo",
+    "clean": "node -e \"const fs = require('fs');try{fs.rmSync('./dist',{recursive:true})} catch {}\""
+  },
+  "dependencies": {
+    "@discordjs/builders": "^0.13.0",
+    "@discordjs/rest": "^0.4.1",
+    "@napi-rs/canvas": "^0.1.21",
+    "@napi-rs/cli": "^2.9.0",
+    "axios": "^0.27.2",
+    "chalk": "^4.1.0",
+    "discord-api-types": "^0.32.1",
+    "discord.js": "^13.7.0",
+    "dotenv": "^16.0.1",
+    "cross-env":"7.0.3"
+  },
+  "devDependencies": {
+    "@types/node": "^17.0.33"
+    
+  }
+}
