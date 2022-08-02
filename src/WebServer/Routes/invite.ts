@@ -15,7 +15,8 @@ Route.get("/:id",async (req: Express.Request, res : Express.Response) => {
         where:{
             AND:{
                 id:req.params.id,
-                Valid:true
+                Valid:true,
+                DiscordUserId:null
             }
         }
     }).catch(_=>undefined)
