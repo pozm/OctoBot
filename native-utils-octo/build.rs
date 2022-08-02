@@ -4,6 +4,7 @@ extern crate napi_build;
 
 fn main() {
     println!("cargo:rerun-if-changed=build.rs");
+    println!("cargo:rerun-if-changed=../.git/HEAD");
     let out_dir = env::var_os("OUT_DIR").unwrap();
     {
         let dest_path = Path::new(&out_dir).join("git_hash");

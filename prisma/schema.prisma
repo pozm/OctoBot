@@ -1,0 +1,41 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model DiscordUser {
+  id            String        @id
+
+  Invitees      DiscordUser[] @relation(name: "DiscordUserInvitees")
+  InvitedBy     DiscordUser   @relation(name: "DiscordUserInvitees", fields: [InvitedById], references: [id])
+
+  InvitedById String        @default("0")
+
+  DiscordInvites DiscordInvite[] @relation("generatedBy")
+  JoinedInvite   DiscordInvite?  @relation("Joined")
+
+  MaxInvites Int @default(1)
+}
+
+model DiscordInvite {
+  id            String      @id @default(cuid())
+
+  GeneratedBy   DiscordUser @relation("generatedBy", fields: [GeneratedById], references: [id])
+  GeneratedById String
+
+  DiscordUser   DiscordUser @relation("Joined", fields: [DiscordUserId], references: [id])
+  DiscordUserId String      @unique
+}
+
+model RegisteredData {
+  id   String @id @default(cuid())
+  Hwid String @unique
+  Ip   String @unique
+}

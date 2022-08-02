@@ -3,7 +3,7 @@ import {
 	SlashCommandStringOption,
 	SlashCommandUserOption,
 } from "@discordjs/builders";
-import { CommandInteraction, CacheType, MessageEmbed } from "discord.js";
+import { CommandInteraction, CacheType, EmbedBuilder } from "discord.js";
 import { FetchCommandByNameOrAlias } from "../../Utils/Methods";
 import { CommandClass } from "./../../Utils/CommandClass";
 import { createCanvas, Image, SKRSContext2D } from "@napi-rs/canvas";
@@ -122,7 +122,7 @@ export default class ProfileCommand extends CommandClass {
 		ctx.stroke();
 		ctx.clip();
 
-		let avatarUrl = targettedUser.displayAvatarURL({ format: "png" });
+		let avatarUrl = targettedUser.displayAvatarURL({ extension: "png" });
         let avatarImg = new Image();
         avatarImg.src = await axios.get(avatarUrl, { responseType: "arraybuffer"}).then(v=>Buffer.from(v.data))
         ctx.drawImage(avatarImg, 25, 25, 200, 200);

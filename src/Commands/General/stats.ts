@@ -1,7 +1,7 @@
 import { EventsSet } from './../../bot';
 import { CommandsSet } from '../../bot';
 import { SlashCommandStringOption, SlashCommandUserOption } from '@discordjs/builders';
-import { CommandInteraction, CacheType, MessageEmbed } from 'discord.js';
+import { CommandInteraction, CacheType, EmbedBuilder } from 'discord.js';
 import { FetchCommandByNameOrAlias } from '../../Utils/Methods';
 import { CommandClass } from '../../Utils/CommandClass';
 import { createCanvas } from '@napi-rs/canvas';
@@ -14,16 +14,17 @@ export default class StatsCommand extends CommandClass {
     }
     
     override async invoke(command: CommandInteraction<CacheType>) {
-        let emb = new MessageEmbed()
-        .setAuthor({name:"Octo",iconURL:command.client.user?.displayAvatarURL({dynamic:true,size:64})?.toString()})
+        let emb = new EmbedBuilder()
+        .setAuthor({name:"Octo",iconURL:command.client.user?.displayAvatarURL({size:64})?.toString()})
         .setTitle("Statistics")
-        .addField("Uptime",DateFns.prettyFromMs(command.client.uptime!),true)
-        .addField("Commands",`${CommandsSet.size} loaded`,true)
-        .addField("Events",`${EventsSet.size} loaded`,true)
-        .addField("Ping", `${Math.round(command.client.ws.ping)}ms`,true)
-        .addField("Versioning:Commit Hash",Versioning.getGitHash().slice(0,8),true)
-        .addField("Versioning:Branch",Versioning.getGitBranch(),true)
-        .addField("Rust Build Info",Versioning.getRustInfo())
+        .addFields({name:"Uptime",value:DateFns.prettyFromMs(command.client.uptime!),inline:true}, 
+{name:"Commands",value:`${CommandsSet.size} loaded`,inline:true},
+{name:"Events",value:`${EventsSet.size} loaded`,inline:true},
+{name:"Ping", value:`${Math.round(command.client.ws.ping)}ms`,inline:true},
+{name:"Versioning:Commit Hash",value:Versioning.getGitHash().slice(0,8),inline:true},
+{name:"Versioning:Branch",value:Versioning.getGitBranch(),inline:true},
+{name:"Rust Build Info",value:Versioning.getRustInfo()}
+        )
         .setColor("#b884d8")
         command.reply({
             ephemeral:true,

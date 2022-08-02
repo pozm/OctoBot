@@ -1,4 +1,4 @@
-import { Client, Message, MessageEmbed } from "discord.js";
+import { Client, Message, EmbedBuilder } from "discord.js";
 import { RegisterAll } from "../Utils/CommandsRegistrar";
 import { HandledDiscordEvent } from "../Utils/Events/DiscordEvent";
 
@@ -16,7 +16,7 @@ export const AutoRespondHandler_ = class AutoRespondHandler extends HandledDisco
 
         for (let [reg,resp] of this.Responds) {
             if (reg.test(msg.content)) {
-                let emb = new MessageEmbed();
+                let emb = new EmbedBuilder();
                 emb.setTitle("Vulnus Help")
                 emb.setAuthor({name:msg.author.username,iconURL:client.user!.avatarURL()?.toString()});
                 emb.setDescription(resp);

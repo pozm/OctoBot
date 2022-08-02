@@ -1,6 +1,6 @@
 import { Versioning } from 'native-utils-octo';
 import chalk from "chalk";
-import { Client, Intents } from "discord.js";
+import { Client, Partials } from "discord.js";
 import { AutoReloader } from "./Utils/AutoReloader";
 import { EventRegister } from "./Utils/Events/EventRegister";
 import { Logger } from "./Utils/Logging";
@@ -9,22 +9,20 @@ import { ifDev, isProd } from './Utils/Methods';
 
 export const client = new Client({
     intents:[
-        Intents.FLAGS.GUILDS,
-        Intents.FLAGS.DIRECT_MESSAGES,
-        Intents.FLAGS.GUILD_MESSAGES,
-        Intents.FLAGS.GUILD_PRESENCES,
-        Intents.FLAGS.GUILD_MEMBERS,
-        Intents.FLAGS.GUILD_INVITES,
+        'GuildMessages',
+        'GuildPresences',
+        'GuildInvites',
+        'Guilds'
     ],
     partials:[
-        "MESSAGE",
-        "CHANNEL"
+        Partials.Message,
+        Partials.Channel
     ],
     ws:{
         properties:{
-            $os:"iOS",
-            $browser:"Discord iOS",
-            $device:"Discord iOS"
+            os:"iOS",
+            browser:"Discord iOS",
+            device:"Discord iOS"
         }
     }
 })

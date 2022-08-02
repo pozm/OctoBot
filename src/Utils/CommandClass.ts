@@ -53,7 +53,7 @@ export abstract class CommandClass {
 	get Builder() {
 		this.initOptions();
 		let slashBuilder = new SlashCommandBuilder()
-		.setName( ifDev(`${this.name} (TEST)`,this.name))
+		.setName( ifDev(`${this.name}_t`,this.name))
 		.setDescription(this.description)
 		.setDefaultPermission(ifDev(false,this.allowedByDefault));
 		// thanks github copilot :pray:
@@ -76,7 +76,6 @@ export abstract class CommandClass {
 				slashBuilder.addUserOption(opt);
 			}
 		}
-		// console.log(slashBuilder)
 		return slashBuilder
 	}
 

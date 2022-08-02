@@ -1,6 +1,6 @@
 import { CommandsSet } from './../../bot';
 import { SlashCommandStringOption } from '@discordjs/builders';
-import { CommandInteraction, CacheType, MessageEmbed } from 'discord.js';
+import { CommandInteraction, CacheType, EmbedBuilder } from 'discord.js';
 import { FetchCommandByNameOrAlias } from '../../Utils/Methods';
 import { CommandClass } from './../../Utils/CommandClass';
 export default class HelpCommand extends CommandClass {
@@ -18,14 +18,14 @@ export default class HelpCommand extends CommandClass {
     }
     
     override async invoke(command: CommandInteraction<CacheType>) {
-        let commandName = command.options.getString('command');
+        let commandName = command.options.get('command')?.value as string;
         let commandModule = FetchCommandByNameOrAlias(commandName ?? "")
         // console.log("not pogger!2!!")
         let userInvokedBy = await command.client.users.fetch(command.member?.user.id ?? "").catch(() => null)
         if (!userInvokedBy) return;
-        let helpEmbed = new MessageEmbed()
-        .setAuthor({name:"vulnus",iconURL:command.client.user?.displayAvatarURL({dynamic:true,size:64})?.toString()})
-        .setFooter({iconURL:userInvokedBy.displayAvatarURL({dynamic:true,size:64}),text:`invoked by ${userInvokedBy.username}`})
+        let helpEmbed = new EmbedBuilder()
+        .setAuthor({name:"vulnus",iconURL:command.client.user?.displayAvatarURL({size:64})?.toString()})
+        .setFooter({iconURL:userInvokedBy.displayAvatarURL({size:64}),text:`invoked by ${userInvokedBy.username}`})
         if (commandName && commandModule) {
             helpEmbed
             .setTitle(`Help — ${commandName}`)
