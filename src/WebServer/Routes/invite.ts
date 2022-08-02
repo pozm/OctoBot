@@ -1,9 +1,9 @@
-import { uuid } from './../../Utils/index';
+import { uuid } from '../Utils/index';
 import * as Express from "express";
 import Bodyparser from "body-parser";
 import { join } from "path";
 import { readFileSync } from "fs";
-import { prisma } from '../../..';
+import { prisma } from '../..';
 
 const Route = Express.Router()
 // testing
