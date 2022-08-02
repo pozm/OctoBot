@@ -45,7 +45,7 @@ export default class InviteCommand extends CommandClass {
                     DiscordInviteCode:invite.code
                 }
             })
-            let domain = ifDev(`http://localhost:42547/api`,`https://aixeria.com/octo`)
+            let domain = ifDev(`http://localhost:42547/api`,`https://octo.aixeria.com`)
             command.reply({content:`Your invite is at ${domain}/invite/${entry.id}`,ephemeral:true})
         })
 
