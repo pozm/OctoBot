@@ -12,7 +12,8 @@ export const client = new Client({
         'GuildMessages',
         'GuildPresences',
         'GuildInvites',
-        'Guilds'
+        'Guilds',
+        'GuildMembers'
     ],
     partials:[
         Partials.Message,

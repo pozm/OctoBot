@@ -1,9 +1,11 @@
 import { ShardingManager } from 'discord.js';
 import path from 'path';
-import { initServer } from './WebServer/init';
+import { startServer } from './WebServer/';
 import {config} from 'dotenv'
 import { Logger } from './Utils/Logging';
 import chalk from 'chalk';
+import { PrismaClient } from '@prisma/client';
+
 
 config()
 
@@ -20,8 +22,10 @@ if (require.main == module) {
     console.log("spawning shards")
     sharder.spawn().then(_=>{
         console.log("all shards spawned, initalizing web server.")
-        initServer.call({...global,console:{log:Logger.TLogN.bind(this,"SERVER",chalk.bgGreenBright.black)}})
+        startServer.call({...global,console:{log:Logger.TLogN.bind(this,"SERVER",chalk.bgGreenBright.black)}})
     })
 }
 
-export {sharder,OldConsoleLogPointer}
+let prisma = new PrismaClient()
+
+export {sharder as shardingManager,OldConsoleLogPointer,prisma}

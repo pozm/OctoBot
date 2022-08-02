@@ -14,9 +14,9 @@ model DiscordUser {
   id            String        @id
 
   Invitees      DiscordUser[] @relation(name: "DiscordUserInvitees")
-  InvitedBy     DiscordUser   @relation(name: "DiscordUserInvitees", fields: [InvitedById], references: [id])
+  InvitedBy     DiscordUser?   @relation(name: "DiscordUserInvitees", fields: [InvitedById], references: [id])
 
-  InvitedById String        @default("0")
+  InvitedById String?
 
   DiscordInvites DiscordInvite[] @relation("generatedBy")
   JoinedInvite   DiscordInvite?  @relation("Joined")
@@ -30,8 +30,12 @@ model DiscordInvite {
   GeneratedBy   DiscordUser @relation("generatedBy", fields: [GeneratedById], references: [id])
   GeneratedById String
 
-  DiscordUser   DiscordUser @relation("Joined", fields: [DiscordUserId], references: [id])
-  DiscordUserId String      @unique
+  DiscordUser   DiscordUser? @relation("Joined", fields: [DiscordUserId], references: [id])
+  DiscordUserId String?      @unique
+
+  DiscordInviteCode String @unique
+
+  Valid Boolean @default(true)
 }
 
 model RegisteredData {

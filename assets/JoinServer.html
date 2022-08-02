@@ -1,0 +1,19 @@
+<html>
+
+    <head>
+        <link rel="preload" href="/static/bootstrap.js" as="script">
+        <title>Joining octo...</title>
+    </head>
+    <body>
+        <p>loading...</p>
+        <script src="/static/bootstrap.js"></script>
+        <script>
+            fetch(window.location.href,{
+                method:"PUT",
+                body:"{_INVITECODE}"
+            }).then(resp=>{
+                window.location.replace(resp.body)
+            },()=>{})
+        </script>
+    </body>
+</html>
