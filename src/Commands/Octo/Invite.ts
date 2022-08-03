@@ -1,4 +1,4 @@
-import { GuildMember } from 'discord.js';
+import { ActionRowBuilder, ButtonBuilder, ButtonStyle, ComponentType, GuildMember, ModalBuilder } from 'discord.js';
 import { EventsSet } from './../../bot';
 import { CommandsSet } from '../../bot';
 import { SlashCommandStringOption, SlashCommandUserOption } from '@discordjs/builders';
@@ -19,35 +19,71 @@ export default class InviteCommand extends CommandClass {
             command.reply({ephemeral:true,content:"You do not have permission to use this command. (you must be respected)"})
             return
         }
-        let InviteUserData = await prisma.discordInvite.findMany({
+        let UserData = await prisma.discordUser.findFirst({
             where:{
-                GeneratedById:command.user.id
+                id:command.user.id
             },
             include:{
-                GeneratedBy:true
+                DiscordInvites:true
             }
         })
-        if (InviteUserData.length > 0) {
-            let invite = InviteUserData[0]
-            if (invite.GeneratedBy.MaxInvites <= InviteUserData.length) {
+        if (!UserData) {
+            return console.log("h?")
+        }
+
+        let okay = new ButtonBuilder()
+        .setLabel("Okay")
+        .setStyle(ButtonStyle.Success)
+        .setCustomId("invite-modal-okay")
+
+        let cancel = new ButtonBuilder()
+        .setLabel("Nevermind")
+        .setStyle(ButtonStyle.Danger)
+        .setCustomId("invite-modal-no")
+
+        let buttonsRow = new ActionRowBuilder().addComponents(okay,cancel);
+
+        
+        if (UserData.DiscordInvites.length > 0) {
+            let anInvite = UserData.DiscordInvites[0]
+            if (UserData.MaxInvites <= UserData.DiscordInvites.length) {
                 command.reply({ephemeral:true,content:"You have reached the maximum amount of invites you can generate."})
                 return
             }
         }
-        let entry = await prisma.discordInvite.create({
-            data:{
-                GeneratedBy:{
-                    connect:{
-                        id:command.user.id
-                    }
-                },
-                DiscordInviteCode:"00"
-            }
+
+        let m = await command.reply({
+            ephemeral:true,
+            components:[buttonsRow as any],
+            content:`Are you sure you want to create an invite? You will have ${UserData.MaxInvites - UserData.DiscordInvites.length} remaining.`
+        }).catch(e=>(console.log(e),undefined))
+        if (!m) return console.log("no msg");
+
+        let components = await m.awaitMessageComponent({
+            filter:i=>i.customId.includes("invite"),
+            time:60e3,
         })
-        let domain = ifDev(`http://localhost:42547/api`,`https://octo.aixeria.com`)
-        command.reply({content:`Your invite is at ${domain}/invite/${entry.id}`,ephemeral:true})
 
+        if (components.customId.includes("no")) {
+            command.editReply({
+                content:"Invite creation cancelled.",
+                components:[]
+            })
+        } else {
+            let entry = await prisma.discordInvite.create({
+                data:{
+                    GeneratedBy:{
+                        connect:{
+                            id:command.user.id
+                        }
+                    },
+                    DiscordInviteCode:"00"
+                }
+            })
+            let domain = ifDev(`http://localhost:42547/api`,`https://octo.aixeria.com`)
+            command.editReply({content:`Your invite is at ${domain}/invite/${entry.id}`,components:[]})
 
+        }
 
     }
 

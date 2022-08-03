@@ -3,7 +3,7 @@ import {
 	SlashCommandStringOption,
 	SlashCommandUserOption,
 } from "@discordjs/builders";
-import { CommandInteraction, CacheType, EmbedBuilder } from "discord.js";
+import { CommandInteraction, CacheType, EmbedBuilder, User } from "discord.js";
 import { FetchCommandByNameOrAlias } from "../../Utils/Methods";
 import { CommandClass } from "./../../Utils/CommandClass";
 import { createCanvas, Image, SKRSContext2D } from "@napi-rs/canvas";
@@ -52,7 +52,7 @@ export default class ProfileCommand extends CommandClass {
 		let canvas = createCanvas(800, 250);
 		let ctx = canvas.getContext("2d");
 
-		let targettedUser = await (command.options.getUser("user") ?? command.user).fetch().catch(()=>undefined);
+		let targettedUser = await (command.options.getUser("user") ?? command.user).fetch().catch(()=>undefined) as User;
 
 
 
