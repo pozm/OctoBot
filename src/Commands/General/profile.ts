@@ -12,7 +12,7 @@ import { readFileSync } from "fs";
 import { join } from "path";
 export default class ProfileCommand extends CommandClass {
 
-    vulnusIcon : Image = new Image();
+    octoIcon : Image = new Image();
 
 	constructor() {
 		super("profile", "Displays a users profile", [
@@ -21,7 +21,7 @@ export default class ProfileCommand extends CommandClass {
 				.setName("user")
 				.setDescription("pog"),
 		]);
-        this.vulnusIcon.src = readFileSync(join(process.cwd(), "../assets/octo_ico.png"));
+        this.octoIcon.src = readFileSync(join(process.cwd(), "../assets/octo_ico.png"));
 	}
 
     roundRect(ctx:SKRSContext2D,x:number, y:number, width:number, height:number, radius:number) {
@@ -129,7 +129,7 @@ export default class ProfileCommand extends CommandClass {
 
 
         ctx.restore()
-        ctx.drawImage(this.vulnusIcon, 780-100, 25, 100, 100);
+        ctx.drawImage(this.octoIcon, 780-100, 25, 100, 100);
 //
 		let canvasExport = await canvas.toBuffer("image/png");//
 //g

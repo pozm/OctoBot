@@ -28,10 +28,10 @@ Trace:
 
 npm manifest: 
   {
-    "name": "VulnusBot",
+    "name": "OctoBot",
     "version": "1.0.0",
     "main": "index.js",
-    "repository": "https://github.com/beat-game-dev/VulnusBot.git",
+    "repository": "https://github.com/beat-game-dev/OctoBot.git",
     "author": "Luna <44528100+pozm@users.noreply.github.com>",
     "license": "MIT",
     "scripts": {

@@ -24,5 +24,5 @@ fn find_file_name(path_to:&Path,search:&str,depth:i32) -> Option<bool> {
 }
 
 fn main() {
-    println!("{:?}",find_file_name(Path::new("X:\\meta\\app\\vulnus\\patron-latest\\maps"), "meta.json", 0))
+    println!("{:?}",find_file_name(Path::new("X:\\meta\\app\\octo\\patron-latest\\maps"), "meta.json", 0))
 }

@@ -24,7 +24,7 @@ export default class HelpCommand extends CommandClass {
         let userInvokedBy = await command.client.users.fetch(command.member?.user.id ?? "").catch(() => null)
         if (!userInvokedBy) return;
         let helpEmbed = new EmbedBuilder()
-        .setAuthor({name:"vulnus",iconURL:command.client.user?.displayAvatarURL({size:64})?.toString()})
+        .setAuthor({name:"octo",iconURL:command.client.user?.displayAvatarURL({size:64})?.toString()})
         .setFooter({iconURL:userInvokedBy.displayAvatarURL({size:64}),text:`invoked by ${userInvokedBy.username}`})
         if (commandName && commandModule) {
             helpEmbed
