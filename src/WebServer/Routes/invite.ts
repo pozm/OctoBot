@@ -10,7 +10,7 @@ const Route = Express.Router()
 // testing
 
 let file =  readFileSync(join(process.cwd(), "../assets/JoinServer.html")).toString()
-let validPog = new Map<string,string>();
+let validPog : Set<string> = new Set()
 let Invitelock : Set<string> = new Set()
 Route.get("/:id",async (req: Express.Request, res : Express.Response) => {
     if (Invitelock.has(req.params.id)) {
@@ -32,7 +32,7 @@ Route.get("/:id",async (req: Express.Request, res : Express.Response) => {
     }
     Invitelock.add(req.params.id)
     let pog = new uuid().toString();
-    validPog.set(pog,inv.DiscordInviteCode)
+    validPog.add(pog)
     res.send(file.replaceAll("{_INVITECODE}","ag" + Buffer.from(pog).toString("base64") + "kg"))
 })
 Route.post("/:id",Express.text(),async (req: Express.Request, res : Express.Response) => {
