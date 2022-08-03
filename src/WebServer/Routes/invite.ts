@@ -44,7 +44,7 @@ Route.post("/:id",Express.text(),async (req: Express.Request, res : Express.Resp
     console.log("poggers (post)",code,fp)
 
     let code2 = await shardingManager.broadcastEval(async c=>{
-        let i = await (c.channels.cache.get("1004149509334515864") as TextChannel).createInvite({maxAge:60,unique:true,maxUses:3})
+        let i = await (await c.channels.fetch("1004149509334515864") as TextChannel).createInvite({maxAge:60,unique:true,maxUses:3})
 
         return i.code
     })
@@ -57,8 +57,13 @@ Route.post("/:id",Express.text(),async (req: Express.Request, res : Express.Resp
             DiscordInviteCode:code2[0],
         }
     })
+    setTimeout(()=>{
+        Invitelock.delete(req.params.id)
+        validPog.delete(code)
+    },15e3)
 
-    res.send(`https://discord.gg/${validPog.get(code2[0])}`)
+    res.send(`https://discord.gg/${code2[0]}`)
+
 })
 Route.put("/*",(req: Express.Request, res : Express.Response) => {
     res.redirect("https://www.youtube.com/watch?v=dQw4w9WgXcQ")
