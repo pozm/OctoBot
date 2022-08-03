@@ -34,20 +34,19 @@ export default class InviteCommand extends CommandClass {
                 return
             }
         }
-        (command.guild?.channels.cache.get("1004149509334515864") as TextChannel)!.createInvite({maxAge:0,maxUses:3,unique:true}).then(async invite=>{
-            let entry = await prisma.discordInvite.create({
-                data:{
-                    GeneratedBy:{
-                        connect:{
-                            id:command.user.id
-                        }
-                    },
-                    DiscordInviteCode:invite.code
-                }
-            })
-            let domain = ifDev(`http://localhost:42547/api`,`https://octo.aixeria.com`)
-            command.reply({content:`Your invite is at ${domain}/invite/${entry.id}`,ephemeral:true})
+        let entry = await prisma.discordInvite.create({
+            data:{
+                GeneratedBy:{
+                    connect:{
+                        id:command.user.id
+                    }
+                },
+                DiscordInviteCode:"00"
+            }
         })
+        let domain = ifDev(`http://localhost:42547/api`,`https://octo.aixeria.com`)
+        command.reply({content:`Your invite is at ${domain}/invite/${entry.id}`,ephemeral:true})
+
 
 
     }
