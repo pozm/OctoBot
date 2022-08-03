@@ -10,6 +10,7 @@ import { createCanvas, Image, SKRSContext2D } from "@napi-rs/canvas";
 import axios from "axios";
 import { readFileSync } from "fs";
 import { join } from "path";
+import { prisma } from "../..";
 export default class ProfileCommand extends CommandClass {
 
     octoIcon : Image = new Image();
@@ -51,9 +52,16 @@ export default class ProfileCommand extends CommandClass {
 		let canvas = createCanvas(800, 250);
 		let ctx = canvas.getContext("2d");
 
-		let targettedUser = await (command.options.getUser("user") ?? command.user).fetch();
+		let targettedUser = await (command.options.getUser("user") ?? command.user).fetch().catch(()=>undefined);
 
-		let profileInfo: { ranking: number; pp: number } | undefined;
+
+
+		let userData = await prisma.discordUser.findUnique({where:{id:targettedUser?.id},include:{InvitedBy:true,Invitees:true}});
+
+        if (!userData) {
+            command.reply({ephemeral:true,content:"User not found."})
+            return
+        }
 
 		this.roundRect(ctx, 10, 10, 780, 230, 10)
         ctx.fillStyle = "#1c1c1c";
@@ -93,22 +101,32 @@ export default class ProfileCommand extends CommandClass {
         this.MakeFontSmaller(ctx,desiredText,54,(780-100-60) - 280+30);
 		ctx.fillText(desiredText, 280+30, 88);
 
-		if (profileInfo != null) {
-			ctx.font = "34px sans-serif";
-			ctx.fillStyle = "#ffffff";
-			ctx.fillText(`Rank: #${profileInfo.ranking}`, 280+30, 126);
-
-			var rankw = ctx.measureText("Rank:").width;
-			var ppw = ctx.measureText("PP:").width;
-
-			ctx.font = "34px sans-serif";
-			ctx.fillStyle = "#ffffff";
-			ctx.fillText(`PP: ${profileInfo.pp}`, 280 + (rankw - ppw), 164);
-		} else {
-			ctx.font = "36px sans-serif"; //applyText(canvas, `${display}!`);
+		// if (profileInfo != null) {
+        let at = 0;
+        if (userData?.InvitedBy?.id) {
+            let user = await command.client.users?.fetch(userData?.InvitedBy?.id)
+            ctx.font = "34px sans-serif";
 			ctx.fillStyle = "#a5a5a5";
-			ctx.fillText(`No Info`, 280+40, 146);
-		}
+			ctx.fillText(`Invited by: ${user.username}`, 280+40, 146);
+            at += 43;
+        }
+        if (userData?.Invitees?.length) {
+            ctx.font = "34px sans-serif";
+            ctx.fillStyle = "#a5a5a5";
+            ctx.fillText(`Invited ${userData?.Invitees?.length} people`, 280+40, 146+at);
+        }
+
+			// var rankw = ctx.measureText("Rank:").width;
+			// var ppw = ctx.measureText("PP:").width;
+
+			// ctx.font = "34px sans-serif";
+			// ctx.fillStyle = "#ffffff";
+			// ctx.fillText(`PP: ${profileInfo.pp}`, 280 + (rankw - ppw), 164);
+		// } else {
+		// 	ctx.font = "36px sans-serif"; //applyText(canvas, `${display}!`);
+		// 	ctx.fillStyle = "#a5a5a5";
+		// 	ctx.fillText(`No Info`, 280+40, 146);
+		// }
 		//
         
         ctx.save
