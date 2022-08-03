@@ -77,7 +77,6 @@ export default class InviteCommand extends CommandClass {
                             id:command.user.id
                         }
                     },
-                    DiscordInviteCode:"00"
                 }
             })
             let domain = ifDev(`http://localhost:42547/api`,`https://octo.aixeria.com`)

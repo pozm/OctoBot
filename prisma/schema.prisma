@@ -33,7 +33,7 @@ model DiscordInvite {
   DiscordUser   DiscordUser? @relation("Joined", fields: [DiscordUserId], references: [id])
   DiscordUserId String?      @unique
 
-  DiscordInviteCode String @unique
+  DiscordInviteCode String? @unique
 
   Valid Boolean @default(true)
 }
