@@ -31,19 +31,19 @@ export const NewUserEvent = class UponGuildUserAddEvent extends HandledDiscordEv
         }).catch(_=>undefined)
         if (!discordInvite) {
             await prisma.discordInvite.deleteMany({where:{DiscordInviteCode:invite.code}}).catch(_=>undefined)
-            member.kick()
+            member.kick("p1")
             invite.delete()
             return
         }
         else if (discordInvite.DiscordUserId) {
             await prisma.discordInvite.deleteMany({where:{DiscordInviteCode:invite.code}}).catch(_=>undefined)
-            member.kick()
+            member.kick("p2")
             invite.delete()
             return
         }
         else if (!discordInvite.Valid) {
             await prisma.discordInvite.deleteMany({where:{DiscordInviteCode:invite.code}}).catch(_=>undefined)
-            member.kick()
+            member.kick("p3")
             invite.delete()
             return
         } else {

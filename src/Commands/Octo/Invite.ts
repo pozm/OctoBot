@@ -55,7 +55,7 @@ export default class InviteCommand extends CommandClass {
         let m = await command.reply({
             ephemeral:true,
             components:[buttonsRow as any],
-            content:`Are you sure you want to create an invite? You will have ${UserData.MaxInvites - UserData.DiscordInvites.length} remaining.`
+            content:`Are you sure you want to create an invite? You will have ${UserData.MaxInvites - UserData.DiscordInvites.length + 1} remaining.`
         }).catch(e=>(console.log(e),undefined))
         if (!m) return console.log("no msg");
 

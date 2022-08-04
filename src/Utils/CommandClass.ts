@@ -55,7 +55,7 @@ export abstract class CommandClass {
 		let slashBuilder = new SlashCommandBuilder()
 		.setName( ifDev(`${this.name}_t`,this.name))
 		.setDescription(this.description)
-		.setDefaultPermission(ifDev(false,this.allowedByDefault));
+		.setDefaultMemberPermissions(ifDev('0',this.allowedByDefault? '0' : null));
 		// thanks github copilot :pray:
 		for (let opt of this.options) {
 			if (opt instanceof SlashCommandBooleanOption) {

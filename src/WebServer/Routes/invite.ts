@@ -33,6 +33,12 @@ Route.get("/:id",async (req: Express.Request, res : Express.Response) => {
     Invitelock.add(req.params.id)
     let pog = new uuid().toString();
     validPog.add(pog)
+
+    setTimeout(()=>{
+        Invitelock.delete(req.params.id)
+        validPog.delete(pog)
+    },15e3)
+
     res.send(file.replaceAll("{_INVITECODE}","ag" + Buffer.from(pog).toString("base64") + "kg"))
 })
 Route.post("/:id",Express.text(),async (req: Express.Request, res : Express.Response) => {
