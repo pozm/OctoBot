@@ -41,5 +41,5 @@ model DiscordInvite {
 model RegisteredData {
   id   String @id @default(cuid())
   Hwid String @unique
-  Ip   String @unique
+  // Ip   String @unique
 }

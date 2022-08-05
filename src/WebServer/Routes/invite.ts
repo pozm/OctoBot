@@ -55,14 +55,25 @@ Route.post("/:id",Express.text(),async (req: Express.Request, res : Express.Resp
         return i.code
     })
 
-    await prisma.discordInvite.update({
+    let response = await prisma.$transaction([
+        prisma.registeredData.create({
+            data:{
+                Hwid:fp,
+                // Ip:req.ip,
+            },
+        }),
+        prisma.discordInvite.update({
         where:{
             id:req.params.id
         },
         data:{
             DiscordInviteCode:code2[0],
         }
-    })
+    })]).catch(_=>undefined)
+    if (!response) {
+        res.redirect("/invite/failure")
+        return
+    }
     setTimeout(()=>{
         Invitelock.delete(req.params.id)
         validPog.delete(code)
@@ -71,6 +82,11 @@ Route.post("/:id",Express.text(),async (req: Express.Request, res : Express.Resp
     res.send(`https://discord.gg/${code2[0]}`)
 
 })
+
+Route.put("/failure",(req,res)=>{
+    res.send("Invitation failed, perhaps you're already registered")
+})
+
 Route.put("/*",(req: Express.Request, res : Express.Response) => {
     res.redirect("https://www.youtube.com/watch?v=dQw4w9WgXcQ")
 })
