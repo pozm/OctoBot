@@ -63,8 +63,8 @@ export const NewUserEvent = class UponGuildUserAddEvent extends HandledDiscordEv
                 }
             })
             member.roles.add(this.UserRole)
-            let inviter = await client.users?.fetch(discordInvite?.GeneratedById).then(v=>v.username,_=>`unknown<${discordInvite?.GeneratedById}>`)
-            newUsersChannel.send({content:`${member.user.username} (${member.user.id}) has joined the server! (Invited by ${inviter})`})
+            let inviter = await client.users?.fetch(discordInvite?.GeneratedById).then(v=>v.toString(),_=>`unknown<${discordInvite?.GeneratedById}>`)
+            newUsersChannel.send({content:`${member.user} has joined the server (Invited by ${inviter})`,allowedMentions:{users:[],roles:[]}})
             invite.delete()
         }
     }
