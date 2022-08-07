@@ -43,9 +43,12 @@ export default class InviteCommand extends CommandClass {
 
         let buttonsRow = new ActionRowBuilder().addComponents(okay,cancel);
 
+        if ((command.member as GuildMember).roles.cache.has(`1005941928833056899`)) { //temp root
+            UserData.MaxInvites = 9999
+        }
+
         
         if (UserData.DiscordInvites.length > 0) {
-            let anInvite = UserData.DiscordInvites[0]
             if (UserData.MaxInvites <= UserData.DiscordInvites.length) {
                 command.reply({ephemeral:true,content:"You have reached the maximum amount of invites you can generate."})
                 return
